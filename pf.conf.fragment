@@ -1,0 +1,15 @@
+# nonstatic: router -> gateway -> nsd box (wireguard)
+#
+# router    10.0.23.2 (lan)
+# gateway   10.0.23.1 (lan) / 10.0.32.1 (wg)
+# nsd box   10.0.32.2 (wg)
+
+# --- gateway (10.0.23.1 / 10.0.32.1) ----------------------------------------
+
+match in on em0 proto tcp from 10.0.23.2 to 10.0.23.1 port 5001 rdr-to 10.0.32.2 port 5001
+pass  in on em0 proto tcp from 10.0.23.2 to 10.0.32.2 port 5001
+
+# --- nsd box (10.0.32.2) ----------------------------------------------------
+
+match in on wg0 proto tcp from 10.0.32.1 to 10.0.32.2 port 5001 rdr-to 127.0.0.1 port 5001
+pass  in on wg0 proto tcp from 10.0.32.1 to 127.0.0.1 port 5001

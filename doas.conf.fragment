@@ -1,0 +1,2 @@
+# nonstatic: allow _nonstatic to run the zone signing script as root
+permit nopass _nonstatic cmd /usr/local/bin/sign_zone.sh
